@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://hwvmw4adv4xv"]
+[gd_scene load_steps=9 format=3 uid="uid://hwvmw4adv4xv"]
 
 [ext_resource type="PackedScene" uid="uid://xbeuqx4mer0q" path="res://player.tscn" id="1_5s8x2"]
+[ext_resource type="Script" path="res://Camera3D.gd" id="1_d1thp"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2e0rw"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -36,6 +37,7 @@ shadow_enabled = true
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.223, 2, -0.018)
 fov = 70.5364
+script = ExtResource("1_d1thp")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0137479)

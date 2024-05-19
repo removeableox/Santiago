@@ -1,7 +1,7 @@
 extends RigidBody3D
 
 # Variables
-var jump_force = 20.0  # Adjust as needed for the jump height
+var jump_force = 7.0  # Adjust as needed for the jump height
 var is_on_ground = false  # Track whether the character is on the ground
 
 # Called when the node enters the scene tree for the first time.
