@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://hwvmw4adv4xv"]
+[gd_scene load_steps=8 format=3 uid="uid://hwvmw4adv4xv"]
 
 [ext_resource type="PackedScene" uid="uid://xbeuqx4mer0q" path="res://player.tscn" id="1_5s8x2"]
 
@@ -21,6 +21,8 @@ size = Vector2(10, 10)
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_k8l6j"]
 data = PackedVector3Array(5, 0, 5, -5, 0, 5, 5, 0, -5, -5, 0, 5, -5, 0, -5, 5, 0, -5)
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_k3pg7"]
+
 [node name="Node3D" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00522071)
 
@@ -28,7 +30,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00522071)
 environment = SubResource("Environment_vndao")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.999945, 0.00753272, -0.00727427, 0, 0.694658, 0.71934, 0.0104717, 0.7193, -0.69462, 0, 0, 0)
+transform = Transform3D(-0.967146, -0.215311, 0.135164, -0.142297, 0.89908, 0.414013, -0.210664, 0.381177, -0.90018, 0, 0, 0)
 shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
@@ -46,3 +48,4 @@ shape = SubResource("ConcavePolygonShape3D_k8l6j")
 
 [node name="Player" parent="." instance=ExtResource("1_5s8x2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -2)
+physics_material_override = SubResource("PhysicsMaterial_k3pg7")
