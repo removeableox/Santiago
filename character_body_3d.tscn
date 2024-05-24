@@ -1,0 +1,95 @@
+[gd_scene load_steps=5 format=3 uid="uid://uwtw40i7cg1w"]
+
+[sub_resource type="GDScript" id="GDScript_evf4l"]
+script/source = "extends CharacterBody3D
+
+@export var speed = 40
+@export var fall_acceleration = 75
+
+var target_velocity = Vector3.ZERO
+
+func _physics_process(delta):
+	# We create a local variable to store the input direction.
+	var direction = Vector3.ZERO
+
+	# We check for each move input and update the direction accordingly.
+	if Input.is_action_pressed(\"move_right\"):
+		direction.x += 1
+	if Input.is_action_pressed(\"move_left\"):
+		direction.x -= 1
+	if Input.is_action_pressed(\"move_back\"):
+		# Notice how we are working with the vector's x and z axes.
+		# In 3D, the XZ plane is the ground plane.
+		direction.z += 1
+	if Input.is_action_pressed(\"move_forward\"):
+		direction.z -= 1
+		
+	if direction != Vector3.ZERO:
+		direction = direction.normalized()
+		
+		# Get the Camera3D node
+		var camera = get_node(\"Camera3D\")
+		# Get the camera's transform basis (rotation matrix)
+		var camera_basis = camera.global_transform.basis
+
+		# Ignore the camera's y rotation component to prevent vertical movement
+		var flat_camera_basis = Basis(camera_basis.x, Vector3.UP, camera_basis.z)
+		
+		# Convert the local direction to world space using the camera's basis
+		direction = flat_camera_basis * direction
+		
+	# Ground Velocity
+	target_velocity.x = direction.x * speed
+	target_velocity.z = direction.z * speed
+
+	# Vertical Velocity
+	if not is_on_floor(): # If in the air, fall towards the floor. Literally gravity
+		target_velocity.y = target_velocity.y - (fall_acceleration * delta)
+
+	# Moving the Characterq
+	velocity = target_velocity
+	move_and_slide()
+
+func _input(event):
+	if event is InputEventMouseMotion:
+		rotate(Vector3.UP, -event.relative.x * 0.001)
+"
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_legfy"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b7sf7"]
+
+[sub_resource type="GDScript" id="GDScript_7l0lx"]
+script/source = "extends Camera3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta):
+	position = get_node(\"/root/Node3D/CharacterBody3D\").global_transform.origin
+#
+func _input(event):
+	if event is InputEventMouseMotion:
+		rotate(Vector3.UP, -event.relative.x * 0.001)
+		rotate_object_local(Vector3.RIGHT, -event.relative.y * 0.001)
+"
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.7428, 1.17635)
+script = SubResource("GDScript_evf4l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+visible = false
+mesh = SubResource("CapsuleMesh_legfy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.796135, -4.99, 1.58411)
+shape = SubResource("BoxShape3D_b7sf7")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -270.271, -1.17635)
+script = SubResource("GDScript_7l0lx")
